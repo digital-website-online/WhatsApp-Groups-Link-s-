@@ -1,0 +1,10 @@
+.site-header {
+  width: 100%;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.site-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
