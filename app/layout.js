@@ -6,6 +6,7 @@ import "../styles/home-hero.css";
 import "../styles/category-section.css";
 import "../styles/country-section.css";
 import "../styles/group-card.css";
+import "../styles/group-section.css";
 
 export const metadata = {
   title: "WhatsApp Groups",
