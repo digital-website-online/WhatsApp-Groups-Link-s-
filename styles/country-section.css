@@ -1,0 +1,141 @@
+.country-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.country-section__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.country-section__eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #777777;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.country-section h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+.country-section__heading p {
+  margin: 8px 0 0;
+  color: #777777;
+  font-size: 14px;
+}
+
+.country-section__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  color: #555555;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.country-section__link:hover {
+  transform: translateX(3px);
+}
+
+.country-section__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.country-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 88px;
+  padding: 17px;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  background: #ffffff;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.country-card:hover {
+  transform: translateY(-4px);
+  border-color: #d8d8d8;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
+}
+
+.country-card__flag {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 13px;
+  background: #f5f5f5;
+  font-size: 23px;
+}
+
+.country-card__content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.country-card__content strong {
+  font-size: 15px;
+}
+
+.country-card__content small {
+  color: #888888;
+  font-size: 12px;
+}
+
+.country-card__arrow {
+  color: #888888;
+  font-size: 19px;
+  transition: transform 0.2s ease;
+}
+
+.country-card:hover .country-card__arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 800px) {
+  .country-section__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .country-section {
+    padding: 38px 16px;
+  }
+
+  .country-section__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .country-section h2 {
+    font-size: 26px;
+  }
+
+  .country-section__grid {
+    grid-template-columns: 1fr;
+  }
+}
