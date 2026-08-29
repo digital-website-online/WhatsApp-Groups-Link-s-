@@ -1,3 +1,5 @@
+
+import "../styles/group-card.css";
 import "../styles/global.css";
 
 export const metadata = {
