@@ -15,6 +15,26 @@ export const metadata = {
   description: "Find and discover WhatsApp groups.",
 };
 
+export const metadata = {
+  metadataBase: new URL("https://whats-app-groups-links.vercel.app"),
+  title: {
+    default: "WhatsApp Groups - Discover & Join Groups",
+    template: "%s | WhatsApp Groups",
+  },
+  description:
+    "Discover and join WhatsApp groups by category, country and topic.",
+  keywords: [
+    "WhatsApp groups",
+    "WhatsApp group links",
+    "join WhatsApp groups",
+    "WhatsApp group links Pakistan",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
