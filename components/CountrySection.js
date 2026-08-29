@@ -12,13 +12,13 @@ export default function CountrySection() {
     <section className="country-section" aria-labelledby="countries-title">
       <div className="country-section__heading">
         <div>
-          <span className="section-label">EXPLORE</span>
+          <span className="country-section__eyebrow">DISCOVER</span>
           <h2 id="countries-title">WhatsApp Groups by Country</h2>
+          <p>Explore communities from around the world.</p>
         </div>
 
-        <a href="/countries" className="section-link">
-          View all
-          <span aria-hidden="true">→</span>
+        <a href="/countries" className="country-section__link">
+          View all <span aria-hidden="true">→</span>
         </a>
       </div>
 
