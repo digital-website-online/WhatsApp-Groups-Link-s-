@@ -2,6 +2,15 @@ import Header from "../../components/Header";
 import GroupCard from "../../components/GroupCard";
 import Footer from "../../components/Footer";
 
+export const metadata = {
+  title: "WhatsApp Groups - Discover Active Groups",
+  description:
+    "Discover WhatsApp groups by category, country and topic. Find active communities and join groups that match your interests.",
+  alternates: {
+    canonical: "/groups",
+  },
+};
+
 const groups = [
   {
     name: "Pakistan WhatsApp Groups",
@@ -46,7 +55,9 @@ export default function GroupsPage() {
         <section className="groups-page">
           <div className="groups-page__intro">
             <span>EXPLORE</span>
+
             <h1>WhatsApp Groups</h1>
+
             <p>
               Discover WhatsApp groups by category, country and topic.
             </p>
