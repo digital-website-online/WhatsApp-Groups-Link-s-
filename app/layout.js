@@ -1,8 +1,10 @@
-
+import "../styles/global.css";
+import "../styles/group-card.css";
 import "../styles/header.css";
 import "../styles/footer.css";
-import "../styles/group-card.css";
-import "../styles/global.css";
+import "../styles/search.css";
+import "../styles/home-hero.css";
+import "../styles/category-section.css";
 
 export const metadata = {
   title: "WhatsApp Groups",
