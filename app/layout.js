@@ -8,6 +8,7 @@ import "../styles/country-section.css";
 import "../styles/group-card.css";
 import "../styles/group-section.css";
 import "../styles/groups-page.css";
+import "../styles/group-page.css";
 
 export const metadata = {
   title: "WhatsApp Groups",
