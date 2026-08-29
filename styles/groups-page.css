@@ -1,0 +1,49 @@
+.groups-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 70px 20px;
+}
+
+.groups-page__intro {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.groups-page__intro > span {
+  display: block;
+  margin-bottom: 10px;
+  color: #777;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.groups-page__intro h1 {
+  margin: 0;
+  font-size: clamp(36px, 6vw, 56px);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.groups-page__intro p {
+  margin: 16px 0 0;
+  color: #707070;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.groups-page__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .groups-page {
+    padding: 50px 16px;
+  }
+
+  .groups-page__grid {
+    grid-template-columns: 1fr;
+  }
+}
