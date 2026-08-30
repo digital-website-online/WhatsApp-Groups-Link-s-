@@ -7,10 +7,10 @@ export default function Header() {
         </a>
 
         <nav className="site-header__nav" aria-label="Main navigation">
-          <a href="/">Home</a>
-          <a href="/categories">Categories</a>
+          <a href="/groups">Groups</a>
           <a href="/countries">Countries</a>
-          <a href="/add-group">Add Group</a>
+          <a href="/new-groups">New Groups</a>
+          <a href="/add-group">Add Your Group</a>
         </nav>
       </div>
     </header>
