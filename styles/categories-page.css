@@ -1,0 +1,119 @@
+.categories-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 70px 20px;
+}
+
+.categories-page__intro {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.categories-page__intro > span {
+  display: block;
+  margin-bottom: 10px;
+  color: #128c7e;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.categories-page__intro h1 {
+  margin: 0;
+  color: #111b21;
+  font-size: clamp(36px, 6vw, 56px);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.categories-page__intro p {
+  max-width: 640px;
+  margin: 16px 0 0;
+  color: #667781;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.categories-page__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.category-page-card {
+  display: flex;
+  min-width: 0;
+  min-height: 125px;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid #e4e8e6;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 7px 25px rgba(17, 27, 33, 0.035);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.category-page-card:hover {
+  border-color: #cbd8d1;
+  box-shadow: 0 16px 38px rgba(17, 27, 33, 0.08);
+  transform: translateY(-4px);
+}
+
+.category-page-card__icon {
+  display: grid;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 15px;
+  background: #e9f8ef;
+  color: #128c7e;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.category-page-card__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.category-page-card__content h2 {
+  margin: 0 0 6px;
+  color: #111b21;
+  font-size: 17px;
+}
+
+.category-page-card__content p {
+  margin: 0;
+  color: #667781;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.category-page-card__arrow {
+  color: #8696a0;
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.category-page-card:hover .category-page-card__arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 700px) {
+  .categories-page {
+    padding: 50px 16px;
+  }
+
+  .categories-page__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .categories-page__intro h1 {
+    font-size: 38px;
+  }
+}
