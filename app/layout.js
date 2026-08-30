@@ -17,12 +17,9 @@ import "../styles/categories-page.css";
 import "../styles/category-page.css";
 
 export const metadata = {
-  title: "WhatsApp Groups",
-  description: "Find and discover WhatsApp groups.",
-};
-
-export const metadata = {
-  metadataBase: new URL("https://whats-app-groups-links.vercel.app"),
+  metadataBase: new URL(
+    "https://whats-app-groups-links.vercel.app"
+  ),
   title: {
     default: "WhatsApp Groups - Discover & Join Groups",
     template: "%s | WhatsApp Groups",
