@@ -1,0 +1,118 @@
+.countries-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 70px 20px;
+}
+
+.countries-page__intro {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.countries-page__intro > span {
+  display: block;
+  margin-bottom: 10px;
+  color: #667781;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.countries-page__intro h1 {
+  margin: 0;
+  font-size: clamp(36px, 6vw, 56px);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.countries-page__intro p {
+  margin: 16px 0 0;
+  color: #667781;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.countries-page__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.country-page-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 92px;
+  padding: 18px;
+  border: 1px solid #e7e7e7;
+  border-radius: 18px;
+  background: #ffffff;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.country-page-card:hover {
+  transform: translateY(-4px);
+  border-color: #d4d4d4;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.07);
+}
+
+.country-page-card__flag {
+  display: grid;
+  flex: 0 0 50px;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 14px;
+  background: #f0f2f5;
+  font-size: 24px;
+}
+
+.country-page-card__content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.country-page-card__content strong {
+  font-size: 15px;
+}
+
+.country-page-card__content small {
+  color: #667781;
+  font-size: 12px;
+}
+
+.country-page-card__arrow {
+  color: #667781;
+  font-size: 19px;
+  transition: transform 0.2s ease;
+}
+
+.country-page-card:hover .country-page-card__arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 850px) {
+  .countries-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .countries-page {
+    padding: 50px 16px;
+  }
+
+  .countries-page__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .countries-page__intro h1 {
+    font-size: 38px;
+  }
+}
