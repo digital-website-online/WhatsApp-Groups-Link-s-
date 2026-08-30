@@ -11,6 +11,7 @@ import "../styles/groups-page.css";
 import "../styles/group-page.css";
 import "../styles/countries-page.css";
 import "../styles/country-page.css";
+import "../styles/new-groups-page.css";
 
 export const metadata = {
   title: "WhatsApp Groups",
