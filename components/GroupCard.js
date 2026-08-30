@@ -4,32 +4,40 @@ export default function GroupCard({
   country,
   description,
   members,
-  href = "#",
+  href,
 }) {
   return (
     <article className="group-card">
-      <a href={href} className="group-card__link">
+      <div className="group-card__top">
         <div className="group-card__icon" aria-hidden="true">
           WA
         </div>
 
-        <div className="group-card__content">
-          <div className="group-card__top">
-            <h3>{name}</h3>
+        <div className="group-card__info">
+          <span className="group-card__category">
+            {category || "Community"}
+          </span>
 
-            <span className="group-card__arrow" aria-hidden="true">
-              →
-            </span>
-          </div>
-
-          <p>{description}</p>
-
-          <div className="group-card__meta">
-            {category && <span>{category}</span>}
-            {country && <span>{country}</span>}
-            {members && <span>{members} members</span>}
-          </div>
+          <h3>{name}</h3>
         </div>
+      </div>
+
+      <p className="group-card__description">
+        {description || "Discover and join this WhatsApp community."}
+      </p>
+
+      <div className="group-card__meta">
+        <span>{country || "Global"}</span>
+        <span>{members || "New"}</span>
+      </div>
+
+      <a
+        href={href || "#"}
+        className="group-card__join"
+        aria-label={`Join ${name}`}
+      >
+        <span>Join Group</span>
+        <span aria-hidden="true">→</span>
       </a>
     </article>
   );
