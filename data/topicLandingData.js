@@ -76,7 +76,7 @@ const topicLandingData = {
     ],
   },
 
-  exam-preparation: {
+  "exam-preparation": {
     name: "Exam Preparation",
     slug: "exam-preparation",
     title: "Exam Preparation WhatsApp Groups",
@@ -106,7 +106,7 @@ const topicLandingData = {
     ],
   },
 
-  online-learning: {
+  "online-learning": {
     name: "Online Learning",
     slug: "online-learning",
     title: "Online Learning WhatsApp Groups",
@@ -121,7 +121,7 @@ const topicLandingData = {
     ],
   },
 
-  english-learning: {
+  "english-learning": {
     name: "English Learning",
     slug: "english-learning",
     title: "English Learning WhatsApp Groups",
@@ -136,7 +136,7 @@ const topicLandingData = {
     ],
   },
 
-  language-learning: {
+  "language-learning": {
     name: "Language Learning",
     slug: "language-learning",
     title: "Language Learning WhatsApp Groups",
