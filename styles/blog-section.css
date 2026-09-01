@@ -180,3 +180,155 @@
     transition: none;
   }
 }
+.blog-post {
+  width: min(900px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 70px 0 90px;
+}
+
+.blog-post__article {
+  color: #111b21;
+}
+
+.blog-post__header {
+  max-width: 760px;
+  margin-bottom: 42px;
+}
+
+.blog-post__category {
+  display: inline-flex;
+  margin-bottom: 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eafaf0;
+  color: #128c4a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.blog-post h1 {
+  margin: 0;
+  font-size: clamp(36px, 6vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+
+.blog-post__description {
+  max-width: 700px;
+  margin: 18px 0 0;
+  color: #667781;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.blog-post__meta {
+  display: flex;
+  margin-top: 17px;
+  align-items: center;
+  gap: 9px;
+  color: #8696a0;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.blog-post__body {
+  max-width: 760px;
+}
+
+.blog-post__body h2 {
+  margin: 36px 0 12px;
+  color: #111b21;
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+.blog-post__body p {
+  margin: 0 0 15px;
+  color: #54656f;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.blog-post__body .blog-post__intro {
+  color: #263238;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.blog-post__tips {
+  margin-top: 38px;
+  padding: 22px;
+  border: 1px solid #e5e9e7;
+  border-radius: 18px;
+  background: #f8fbf9;
+}
+
+.blog-post__tips h2 {
+  margin-top: 0;
+}
+
+.blog-post__tips ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.blog-post__tips li {
+  margin: 8px 0;
+  color: #54656f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.blog-post__related {
+  margin-top: 48px;
+  padding-top: 25px;
+  border-top: 1px solid #e5e9e7;
+}
+
+.blog-post__related strong {
+  display: block;
+  margin-bottom: 13px;
+  font-size: 13px;
+}
+
+.blog-post__related div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.blog-post__related a {
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: #f0f2f5;
+  color: #128c7e;
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.blog-post__related a:hover {
+  background: #eafaf0;
+}
+
+@media (max-width: 600px) {
+  .blog-post {
+    padding: 52px 0 70px;
+  }
+
+  .blog-post h1 {
+    font-size: 36px;
+    letter-spacing: -1.3px;
+  }
+
+  .blog-post__body p {
+    font-size: 14px;
+  }
+
+  .blog-post__related div {
+    flex-direction: column;
+  }
+}
