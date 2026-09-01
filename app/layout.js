@@ -19,6 +19,7 @@ import "../styles/category-page.css";
 import "../styles/faq-section.css";
 import "../styles/blog-section.css";
 import "../styles/landing-page.css";
+
 export const metadata = {
   metadataBase: new URL("https://whats-app-groups-links.vercel.app"),
   title: {
@@ -33,6 +34,11 @@ export const metadata = {
     "join WhatsApp groups",
     "WhatsApp group links Pakistan",
   ],
+
+  verification: {
+    google: "J_GoZji10lxgZABDfuhKcvHw9DbvM98Iu5v8GHD3Quw",
+  },
+
   robots: {
     index: true,
     follow: true,
