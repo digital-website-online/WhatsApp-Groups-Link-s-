@@ -1,6 +1,14 @@
 import { BASE_URL } from "../lib/site";
+import topicLandingData from "../data/topicLandingData";
 
 export default function sitemap() {
+  const landingPages = Object.values(topicLandingData).map((topic) => ({
+    url: `${BASE_URL}/landing/${topic.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
   return [
     {
       url: BASE_URL,
@@ -26,5 +34,6 @@ export default function sitemap() {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    ...landingPages,
   ];
 }
