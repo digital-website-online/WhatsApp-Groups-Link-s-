@@ -6,6 +6,7 @@ import GroupSection from "../components/GroupSection";
 import CountrySection from "../components/CountrySection";
 import Footer from "../components/Footer";
 import FAQSection from "../components/FAQSection";
+import BlogSection from "../components/BlogSection";
 
 export default function HomePage() {
   return (
@@ -19,6 +20,7 @@ export default function HomePage() {
         <GroupSection />
         <CountrySection />
         <FAQSection />
+        <BlogSection />
       </main>
 
       <Footer />
