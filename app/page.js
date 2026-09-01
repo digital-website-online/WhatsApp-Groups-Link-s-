@@ -5,6 +5,7 @@ import CategorySection from "../components/CategorySection";
 import GroupSection from "../components/GroupSection";
 import CountrySection from "../components/CountrySection";
 import Footer from "../components/Footer";
+import FAQSection from "../components/FAQSection";
 
 export default function HomePage() {
   return (
