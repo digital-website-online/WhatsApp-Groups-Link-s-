@@ -18,7 +18,7 @@ import "../styles/categories-page.css";
 import "../styles/category-page.css";
 import "../styles/faq-section.css";
 import "../styles/blog-section.css";
-
+import "../styles/landing-page.css";
 export const metadata = {
   metadataBase: new URL("https://whats-app-groups-links.vercel.app"),
   title: {
