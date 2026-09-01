@@ -18,6 +18,7 @@ export default function HomePage() {
         <CategorySection />
         <GroupSection />
         <CountrySection />
+        <FAQSection />
       </main>
 
       <Footer />
