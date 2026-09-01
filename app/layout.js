@@ -3,6 +3,7 @@ import "../styles/header.css";
 import "../styles/footer.css";
 import "../styles/search.css";
 import "../styles/home-hero.css";
+import "../styles/stats-section.css";
 import "../styles/category-section.css";
 import "../styles/country-section.css";
 import "../styles/group-card.css";
