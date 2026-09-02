@@ -1,53 +1,9 @@
 import Header from "../../components/Header";
 import GroupCard from "../../components/GroupCard";
 import Footer from "../../components/Footer";
+import { supabase } from "../../lib/supabase";
 
-const groups = [
-  {
-    name: "Pakistan WhatsApp Groups",
-    category: "General",
-    country: "Pakistan",
-    description:
-      "Discover active WhatsApp communities from Pakistan.",
-    members: "1.2K",
-    href: "/group/pakistan-whatsapp-groups",
-    keywords:
-      "pakistan whatsapp groups pakistan whatsapp group links pakistan community",
-  },
-  {
-    name: "Indian Friends & Community",
-    category: "Community",
-    country: "India",
-    description:
-      "Connect with an active community and discover new groups.",
-    members: "980",
-    href: "/group/indian-friends-community",
-    keywords:
-      "india whatsapp groups indian whatsapp groups friends community",
-  },
-  {
-    name: "Technology & Programming",
-    category: "Technology",
-    country: "Global",
-    description:
-      "Discuss technology, programming and the latest trends.",
-    members: "2.4K",
-    href: "/group/technology-programming",
-    keywords:
-      "technology programming coding developer software ai tech whatsapp groups",
-  },
-  {
-    name: "Study & Education Hub",
-    category: "Education",
-    country: "Pakistan",
-    description:
-      "Share knowledge, resources and study discussions.",
-    members: "1.5K",
-    href: "/group/study-education-hub",
-    keywords:
-      "education study students learning school college university whatsapp groups",
-  },
-];
+export const revalidate = 60;
 
 export async function generateMetadata({ searchParams }) {
   const params = await searchParams;
@@ -68,7 +24,7 @@ export async function generateMetadata({ searchParams }) {
   return {
     title: "WhatsApp Groups - Discover Active Groups",
     description:
-      "Discover WhatsApp groups by category, country and topic. Find active communities and join groups that match your interests.",
+      "Discover WhatsApp groups by category, country and topic. Find active communities and groups that match your interests.",
     alternates: {
       canonical: "/groups",
     },
@@ -78,6 +34,69 @@ export async function generateMetadata({ searchParams }) {
 export default async function GroupsPage({ searchParams }) {
   const params = await searchParams;
   const query = params?.q?.trim().toLowerCase() || "";
+
+  const { data, error } = await supabase
+    .from("groups")
+    .select(`
+      name,
+      slug,
+      description,
+      members,
+      keywords,
+      categories (
+        name
+      ),
+      countries (
+        name
+      )
+    `)
+    .eq("status", "approved")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Failed to load groups:", error);
+
+    return (
+      <>
+        <Header />
+
+        <main>
+          <section className="groups-page">
+            <div className="groups-page__intro">
+              <span>EXPLORE</span>
+
+              <h1>WhatsApp Groups</h1>
+
+              <p>
+                Discover WhatsApp groups by category, country and topic.
+              </p>
+            </div>
+
+            <div className="groups-page__empty">
+              <h2>Unable to load groups</h2>
+
+              <p>
+                We could not load the WhatsApp groups right now.
+                Please try again later.
+              </p>
+            </div>
+          </section>
+        </main>
+
+        <Footer />
+      </>
+    );
+  }
+
+  const groups = (data || []).map((group) => ({
+    name: group.name,
+    category: group.categories?.name || "",
+    country: group.countries?.name || "",
+    description: group.description || "",
+    members: group.members || "",
+    href: `/group/${group.slug}`,
+    keywords: group.keywords || "",
+  }));
 
   const filteredGroups = query
     ? groups.filter((group) => {
