@@ -7,6 +7,7 @@ import CountrySection from "../components/CountrySection";
 import Footer from "../components/Footer";
 import FAQSection from "../components/FAQSection";
 import BlogSection from "../components/BlogSection";
+import TopicLandingSection from "../components/TopicLandingSection";
 
 export default function HomePage() {
   return (
@@ -19,6 +20,7 @@ export default function HomePage() {
         <CategorySection />
         <GroupSection />
         <CountrySection />
+        <TopicLandingSection />
         <FAQSection />
         <BlogSection />
       </main>
