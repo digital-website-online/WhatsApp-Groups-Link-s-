@@ -35,7 +35,7 @@ export default async function GroupsPage({ searchParams }) {
   const params = await searchParams;
   const query = params?.q?.trim().toLowerCase() || "";
 
-  const { data, error } = await supabase
+  const { data: groupsData, error } = await supabase
     .from("groups")
     .select(`
       name,
@@ -43,12 +43,8 @@ export default async function GroupsPage({ searchParams }) {
       description,
       members,
       keywords,
-      categories (
-        name
-      ),
-      countries (
-        name
-      )
+      categories(name),
+      countries(name)
     `)
     .eq("status", "approved")
     .order("created_at", { ascending: false });
@@ -88,7 +84,7 @@ export default async function GroupsPage({ searchParams }) {
     );
   }
 
-  const groups = (data || []).map((group) => ({
+  const groups = (groupsData || []).map((group) => ({
     name: group.name,
     category: group.categories?.name || "",
     country: group.countries?.name || "",
