@@ -60,6 +60,16 @@
   font-weight: 900;
 }
 
+.group-card__image {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  display: block;
+  border-radius: 15px;
+  object-fit: cover;
+  background: #e9f8ef;
+}
+
 .group-card__info {
   min-width: 0;
   flex: 1;
