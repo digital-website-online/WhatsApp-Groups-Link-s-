@@ -88,6 +88,7 @@ export default async function CountryPage({ params }) {
       description,
       members,
       keywords,
+      image_url,
       categories(name)
     `)
     .eq("country_id", country.id)
@@ -104,6 +105,7 @@ export default async function CountryPage({ params }) {
     country: country.name,
     description: group.description || "",
     members: group.members || "",
+    image_url: group.image_url || null,
     href: `/group/${group.slug}`,
     keywords: group.keywords || "",
   }));
