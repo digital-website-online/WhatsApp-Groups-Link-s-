@@ -121,6 +121,7 @@ export async function POST(request, { params }) {
         country_id,
         members,
         description,
+        image_url,
         status
       `)
       .eq("id", submissionId)
@@ -168,6 +169,7 @@ export async function POST(request, { params }) {
         members: submission.members,
         join_url: submission.group_link,
         keywords: submission.group_name,
+        image_url: submission.image_url,
         status: "approved",
       });
 
