@@ -49,6 +49,27 @@ export default function AddGroupPage() {
         throw new Error("Invalid country selected.");
       }
 
+      let imageUrl = null;
+
+      try {
+        const imageResponse = await fetch("/api/groups/fetch-image", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            groupLink,
+          }),
+        });
+
+        if (imageResponse.ok) {
+          const imageData = await imageResponse.json();
+          imageUrl = imageData?.imageUrl || null;
+        }
+      } catch (imageError) {
+        console.error("Group image fetch error:", imageError);
+      }
+
       const { error } = await supabase
         .from("group_submissions")
         .insert({
@@ -59,6 +80,7 @@ export default function AddGroupPage() {
           country_id: countryData.id,
           members: members || null,
           description,
+          image_url: imageUrl,
           status: "pending",
         });
 
