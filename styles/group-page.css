@@ -37,6 +37,18 @@
   box-shadow: 0 8px 22px rgba(37, 211, 102, 0.22);
 }
 
+/* Group image */
+.group-page__image {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 18px;
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f3f7f5;
+  box-shadow: 0 8px 22px rgba(17, 27, 33, 0.12);
+}
+
 /* Category */
 .group-page__category {
   display: inline-flex;
@@ -170,10 +182,14 @@
     border-radius: 21px;
   }
 
-  .group-page__icon {
+  .group-page__icon,
+  .group-page__image {
     width: 78px;
     height: 78px;
     margin-bottom: 15px;
+  }
+
+  .group-page__icon {
     font-size: 21px;
   }
 
@@ -217,7 +233,8 @@
     padding: 29px 15px 27px;
   }
 
-  .group-page__icon {
+  .group-page__icon,
+  .group-page__image {
     width: 72px;
     height: 72px;
   }
@@ -241,6 +258,7 @@
     font-size: 15px;
   }
 }
+
 /* Group navigation */
 
 .group-page__navigation {
@@ -369,6 +387,7 @@
     display: none;
   }
 }
+
 /* Related WhatsApp Groups */
 
 .group-page__related {
