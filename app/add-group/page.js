@@ -1,16 +1,85 @@
+"use client";
+
+import { useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-
-export const metadata = {
-  title: "Add Your WhatsApp Group",
-  description:
-    "Submit your WhatsApp group to our directory and help people discover your community.",
-  alternates: {
-    canonical: "/add-group",
-  },
-};
+import { supabase } from "../../lib/supabase";
 
 export default function AddGroupPage() {
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    if (submitting) return;
+
+    setSubmitting(true);
+    setMessage("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const submitterName = formData.get("submitterName")?.toString().trim();
+    const groupName = formData.get("groupName")?.toString().trim();
+    const groupLink = formData.get("groupLink")?.toString().trim();
+    const category = formData.get("category")?.toString().trim();
+    const country = formData.get("country")?.toString().trim();
+    const members = formData.get("members")?.toString().trim();
+    const description = formData.get("description")?.toString().trim();
+
+    try {
+      const { data: categoryData, error: categoryError } = await supabase
+        .from("categories")
+        .select("id")
+        .eq("slug", category)
+        .single();
+
+      if (categoryError || !categoryData) {
+        throw new Error("Invalid category selected.");
+      }
+
+      const { data: countryData, error: countryError } = await supabase
+        .from("countries")
+        .select("id")
+        .eq("slug", country)
+        .single();
+
+      if (countryError || !countryData) {
+        throw new Error("Invalid country selected.");
+      }
+
+      const { error } = await supabase
+        .from("group_submissions")
+        .insert({
+          submitter_name: submitterName,
+          group_name: groupName,
+          group_link: groupLink,
+          category_id: categoryData.id,
+          country_id: countryData.id,
+          members: members || null,
+          description,
+          status: "pending",
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      form.reset();
+      setMessage(
+        "Your group has been submitted successfully. It will be reviewed before appearing in the directory."
+      );
+    } catch (error) {
+      console.error("Group submission error:", error);
+      setMessage(
+        "We couldn't submit your group right now. Please check your information and try again."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <>
       <Header />
@@ -28,7 +97,7 @@ export default function AddGroupPage() {
             </p>
           </div>
 
-          <form className="add-group-form">
+          <form className="add-group-form" onSubmit={handleSubmit}>
             <div className="add-group-form__field">
               <label htmlFor="submitter-name">
                 Your Name
@@ -158,11 +227,22 @@ export default function AddGroupPage() {
               </p>
             </div>
 
+            {message && (
+              <div
+                className="add-group-form__message"
+                role="status"
+                aria-live="polite"
+              >
+                {message}
+              </div>
+            )}
+
             <button
               type="submit"
               className="add-group-form__submit"
+              disabled={submitting}
             >
-              Submit Group
+              {submitting ? "Submitting..." : "Submit Group"}
               <span aria-hidden="true">→</span>
             </button>
           </form>
