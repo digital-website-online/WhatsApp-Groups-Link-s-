@@ -1,30 +1,18 @@
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
+import { supabase } from "../../../lib/supabase";
 
-const groups = {
-  "pakistan-whatsapp-groups": {
-    name: "Pakistan WhatsApp Groups",
-    category: "General",
-    country: "Pakistan",
-    description:
-      "Discover active WhatsApp groups and communities from Pakistan.",
-    members: "1.2K",
-    joinUrl: "#",
-  },
-  "technology-programming": {
-    name: "Technology & Programming",
-    category: "Technology",
-    country: "Global",
-    description:
-      "Discuss programming, technology and the latest digital trends.",
-    members: "2.4K",
-    joinUrl: "#",
-  },
-};
+export const revalidate = 60;
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const group = groups[slug];
+
+  const { data: group } = await supabase
+    .from("groups")
+    .select("name, description")
+    .eq("slug", slug)
+    .eq("status", "approved")
+    .single();
 
   if (!group) {
     return {
@@ -35,7 +23,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${group.name} - Join WhatsApp Group`,
-    description: group.description,
+    description: group.description || "",
     alternates: {
       canonical: `/group/${slug}`,
     },
@@ -44,9 +32,23 @@ export async function generateMetadata({ params }) {
 
 export default async function GroupPage({ params }) {
   const { slug } = await params;
-  const group = groups[slug];
 
-  if (!group) {
+  const { data: group, error } = await supabase
+    .from("groups")
+    .select(`
+      name,
+      slug,
+      description,
+      members,
+      join_url,
+      categories(name),
+      countries(name)
+    `)
+    .eq("slug", slug)
+    .eq("status", "approved")
+    .single();
+
+  if (error || !group) {
     return (
       <>
         <Header />
@@ -61,6 +63,10 @@ export default async function GroupPage({ params }) {
     );
   }
 
+  const category = group.categories?.name || "";
+  const country = group.countries?.name || "";
+  const joinUrl = group.join_url;
+
   return (
     <>
       <Header />
@@ -71,26 +77,38 @@ export default async function GroupPage({ params }) {
             WA
           </span>
 
-          <span className="group-page__category">{group.category}</span>
+          <span className="group-page__category">
+            {category}
+          </span>
 
           <h1>{group.name}</h1>
 
-          <p>{group.description}</p>
+          <p>{group.description || ""}</p>
 
           <div className="group-page__meta">
-            <span>{group.country}</span>
-            <span>{group.members} members</span>
+            <span>{country}</span>
+            <span>{group.members || ""} members</span>
           </div>
 
-          <a
-            href={group.joinUrl}
-            className="group-page__join"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Join WhatsApp Group
-            <span aria-hidden="true">→</span>
-          </a>
+          {joinUrl ? (
+            <a
+              href={joinUrl}
+              className="group-page__join"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Join WhatsApp Group
+              <span aria-hidden="true">→</span>
+            </a>
+          ) : (
+            <span
+              className="group-page__join"
+              aria-disabled="true"
+            >
+              Join WhatsApp Group
+              <span aria-hidden="true">→</span>
+            </span>
+          )}
         </article>
       </main>
 
