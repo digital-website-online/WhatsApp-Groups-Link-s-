@@ -1,5 +1,6 @@
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
+import GroupCard from "../../../components/GroupCard";
 import { supabase } from "../../../lib/supabase";
 
 export const revalidate = 60;
@@ -41,6 +42,7 @@ export default async function GroupPage({ params }) {
       description,
       members,
       join_url,
+      category_id,
       categories(name),
       countries(name)
     `)
@@ -66,6 +68,22 @@ export default async function GroupPage({ params }) {
   const category = group.categories?.name || "";
   const country = group.countries?.name || "";
   const joinUrl = group.join_url;
+
+  const { data: relatedGroups } = await supabase
+    .from("groups")
+    .select(`
+      name,
+      slug,
+      description,
+      members,
+      categories(name),
+      countries(name)
+    `)
+    .eq("status", "approved")
+    .eq("category_id", group.category_id)
+    .neq("slug", group.slug)
+    .order("created_at", { ascending: false })
+    .limit(4);
 
   const { data: navigationGroups } = await supabase
     .from("groups")
@@ -179,6 +197,27 @@ export default async function GroupPage({ params }) {
             </nav>
           )}
         </article>
+
+        {relatedGroups && relatedGroups.length > 0 && (
+          <section className="group-page__related">
+            <div className="group-page__related-intro">
+              <span>MORE GROUPS</span>
+              <h2>Related WhatsApp Groups</h2>
+              <p>
+                Discover more WhatsApp groups in the same category.
+              </p>
+            </div>
+
+            <div className="group-page__related-grid">
+              {relatedGroups.map((relatedGroup) => (
+                <GroupCard
+                  key={relatedGroup.slug}
+                  group={relatedGroup}
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
 
       <Footer />
