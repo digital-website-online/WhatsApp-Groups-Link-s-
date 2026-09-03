@@ -5,14 +5,37 @@ import { supabase } from "../../../lib/supabase";
 
 export const revalidate = 60;
 
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
+const countryDescriptions = {
+  Pakistan:
+    "Discover WhatsApp groups and communities from Pakistan.",
+  India:
+    "Find active WhatsApp groups and communities from India.",
+  Bangladesh:
+    "Explore WhatsApp groups and communities from Bangladesh.",
+  "United States":
+    "Discover WhatsApp groups and communities from the United States.",
+  "United Kingdom":
+    "Find WhatsApp groups and communities from the United Kingdom.",
+};
 
-  const { data: country } = await supabase
+async function getCountry(slug) {
+  const { data, error } = await supabase
     .from("countries")
-    .select("name")
+    .select("id, name, slug, flag")
     .eq("slug", slug)
     .single();
+
+  if (error) {
+    console.error("Failed to load country:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const country = await getCountry(slug);
 
   if (!country) {
     return {
@@ -24,7 +47,9 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${country.name} WhatsApp Groups`,
-    description: `Discover WhatsApp groups and communities from ${country.name}.`,
+    description:
+      countryDescriptions[country.name] ||
+      `Discover WhatsApp groups and communities from ${country.name}.`,
     alternates: {
       canonical: `/country/${slug}`,
     },
@@ -34,13 +59,9 @@ export async function generateMetadata({ params }) {
 export default async function CountryPage({ params }) {
   const { slug } = await params;
 
-  const { data: country, error: countryError } = await supabase
-    .from("countries")
-    .select("id, name, slug, flag")
-    .eq("slug", slug)
-    .single();
+  const country = await getCountry(slug);
 
-  if (countryError || !country) {
+  if (!country) {
     return (
       <>
         <Header />
@@ -67,8 +88,7 @@ export default async function CountryPage({ params }) {
       description,
       members,
       keywords,
-      categories(name),
-      countries(name)
+      categories(name)
     `)
     .eq("country_id", country.id)
     .eq("status", "approved")
@@ -81,7 +101,7 @@ export default async function CountryPage({ params }) {
   const countryGroups = (groupsData || []).map((group) => ({
     name: group.name,
     category: group.categories?.name || "",
-    country: group.countries?.name || country.name,
+    country: country.name,
     description: group.description || "",
     members: group.members || "",
     href: `/group/${group.slug}`,
@@ -89,17 +109,8 @@ export default async function CountryPage({ params }) {
   }));
 
   const countryDescription =
-    country.name === "Pakistan"
-      ? "Discover WhatsApp groups and communities from Pakistan."
-      : country.name === "India"
-      ? "Find active WhatsApp groups and communities from India."
-      : country.name === "Bangladesh"
-      ? "Explore WhatsApp groups and communities from Bangladesh."
-      : country.name === "United States"
-      ? "Discover WhatsApp groups and communities from the United States."
-      : country.name === "United Kingdom"
-      ? "Find WhatsApp groups and communities from the United Kingdom."
-      : `Discover WhatsApp groups and communities from ${country.name}.`;
+    countryDescriptions[country.name] ||
+    `Discover WhatsApp groups and communities from ${country.name}.`;
 
   return (
     <>
