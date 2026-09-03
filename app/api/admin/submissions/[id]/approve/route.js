@@ -83,11 +83,12 @@ export async function POST(request, { params }) {
 
     const adminClient = createAdminClient();
 
-    const { data: adminData, error: adminError } = await adminClient
-      .from("admin_users")
-      .select("user_id")
-      .eq("user_id", user.id)
-      .maybeSingle();
+    const { data: adminData, error: adminError } =
+      await adminClient
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
 
     if (adminError || !adminData) {
       return NextResponse.json(
@@ -96,7 +97,8 @@ export async function POST(request, { params }) {
       );
     }
 
-    const submissionId = Number(params.id);
+    const { id } = await params;
+    const submissionId = Number(id);
 
     if (!Number.isInteger(submissionId) || submissionId <= 0) {
       return NextResponse.json(
@@ -105,28 +107,30 @@ export async function POST(request, { params }) {
       );
     }
 
-    const { data: submission, error: submissionError } =
-      await adminClient
-        .from("group_submissions")
-        .select(`
-          id,
-          submitter_name,
-          group_name,
-          group_link,
-          category_id,
-          country_id,
-          members,
-          description,
-          status,
-          categories:category_id (
-            name
-          )
-        `)
-        .eq("id", submissionId)
-        .maybeSingle();
+    const {
+      data: submission,
+      error: submissionError,
+    } = await adminClient
+      .from("group_submissions")
+      .select(`
+        id,
+        submitter_name,
+        group_name,
+        group_link,
+        category_id,
+        country_id,
+        members,
+        description,
+        status
+      `)
+      .eq("id", submissionId)
+      .maybeSingle();
 
     if (submissionError) {
-      console.error("Submission lookup error:", submissionError);
+      console.error(
+        "Submission lookup error:",
+        submissionError
+      );
 
       return NextResponse.json(
         { error: "Unable to load submission." },
@@ -148,14 +152,10 @@ export async function POST(request, { params }) {
       );
     }
 
-    const slug = makeSlug(submission.group_name, submission.id);
-
-    const keywords = [
+    const slug = makeSlug(
       submission.group_name,
-      submission.categories?.name || "",
-    ]
-      .filter(Boolean)
-      .join(", ");
+      submission.id
+    );
 
     const { error: groupError } = await adminClient
       .from("groups")
@@ -167,12 +167,15 @@ export async function POST(request, { params }) {
         description: submission.description,
         members: submission.members,
         join_url: submission.group_link,
-        keywords,
+        keywords: submission.group_name,
         status: "approved",
       });
 
     if (groupError) {
-      console.error("Group approval insert error:", groupError);
+      console.error(
+        "Group approval insert error:",
+        groupError
+      );
 
       return NextResponse.json(
         { error: "Unable to approve this group." },
@@ -189,7 +192,10 @@ export async function POST(request, { params }) {
       .eq("status", "pending");
 
     if (updateError) {
-      console.error("Submission status update error:", updateError);
+      console.error(
+        "Submission status update error:",
+        updateError
+      );
 
       return NextResponse.json(
         {
