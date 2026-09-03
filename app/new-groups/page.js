@@ -23,6 +23,7 @@ export default async function NewGroupsPage() {
       description,
       members,
       keywords,
+      image_url,
       categories(name),
       countries(name)
     `)
@@ -39,6 +40,7 @@ export default async function NewGroupsPage() {
     country: group.countries?.name || "",
     description: group.description || "",
     members: group.members || "",
+    image_url: group.image_url || null,
     href: `/group/${group.slug}`,
     keywords: group.keywords || "",
   }));
@@ -51,7 +53,6 @@ export default async function NewGroupsPage() {
         <section className="new-groups-page">
           <div className="new-groups-page__intro">
             <span>JUST ADDED</span>
-
             <h1>New WhatsApp Groups</h1>
 
             <p>
