@@ -58,6 +58,13 @@
   font-weight: 700;
 }
 
+.add-group-form__field small {
+  margin-top: -2px;
+  color: #667781;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
 .add-group-form__field input,
 .add-group-form__field select,
 .add-group-form__field textarea {
@@ -87,6 +94,11 @@
   resize: vertical;
 }
 
+.add-group-form__field input::placeholder,
+.add-group-form__field textarea::placeholder {
+  color: #9aa5aa;
+}
+
 .add-group-form__field input:focus,
 .add-group-form__field select:focus,
 .add-group-form__field textarea:focus {
@@ -100,6 +112,28 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-top: 20px;
+}
+
+.add-group-form__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 20px;
+  padding: 12px 14px;
+  border: 1px solid #e8eeee;
+  border-radius: 12px;
+  background: #f7fafa;
+  color: #667781;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.add-group-form__note::before {
+  content: "✓";
+  flex: 0 0 auto;
+  color: #25d366;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .add-group-form__submit {
@@ -141,8 +175,17 @@
     padding: 50px 16px;
   }
 
+  .add-group-page__intro {
+    margin-bottom: 28px;
+  }
+
   .add-group-page__intro h1 {
     font-size: 38px;
+  }
+
+  .add-group-page__intro p {
+    font-size: 14px;
+    line-height: 1.6;
   }
 
   .add-group-form {
@@ -152,5 +195,19 @@
 
   .add-group-form__row {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .add-group-form__field input,
+  .add-group-form__field select {
+    height: 50px;
+  }
+
+  .add-group-form__field textarea {
+    min-height: 120px;
+  }
+
+  .add-group-form__submit {
+    height: 50px;
   }
 }
