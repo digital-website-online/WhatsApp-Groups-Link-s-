@@ -240,3 +240,131 @@
     font-size: 15px;
   }
 }
+/* Group navigation */
+
+.group-page__navigation {
+  width: 100%;
+  max-width: 680px;
+  margin: 28px auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.group-page__nav {
+  min-height: 70px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid #e2ebe7;
+  border-radius: 15px;
+  background: #f8faf9;
+  color: #111b21;
+  text-decoration: none;
+  text-align: left;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.group-page__nav:hover {
+  background: #f1faf7;
+  border-color: #b9ddd2;
+  color: #111b21;
+  transform: translateY(-2px);
+}
+
+.group-page__nav--next {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.group-page__nav-arrow {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #25d366;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.group-page__nav-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.group-page__nav-content small {
+  color: #86939a;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.group-page__nav-content strong {
+  overflow: hidden;
+  color: #111b21;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group-page__nav-placeholder {
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .group-page__navigation {
+    margin-top: 23px;
+    gap: 9px;
+  }
+
+  .group-page__nav {
+    min-height: 64px;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 13px;
+  }
+
+  .group-page__nav-arrow {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    font-size: 19px;
+  }
+
+  .group-page__nav-content small {
+    font-size: 9px;
+  }
+
+  .group-page__nav-content strong {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 430px) {
+  .group-page__navigation {
+    grid-template-columns: 1fr;
+  }
+
+  .group-page__nav--next {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .group-page__nav-placeholder {
+    display: none;
+  }
+}
