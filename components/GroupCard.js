@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function GroupCard({
   name,
   category,
@@ -31,14 +33,14 @@ export default function GroupCard({
         <span>{members || "New"}</span>
       </div>
 
-      <a
+      <Link
         href={href || "#"}
         className="group-card__join"
         aria-label={`Join ${name}`}
       >
         <span>Join Group</span>
         <span aria-hidden="true">→</span>
-      </a>
+      </Link>
     </article>
   );
 }
