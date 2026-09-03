@@ -43,6 +43,7 @@ export default async function GroupPage({ params }) {
       members,
       join_url,
       category_id,
+      image_url,
       categories(name),
       countries(name)
     `)
@@ -111,9 +112,19 @@ export default async function GroupPage({ params }) {
 
       <main className="group-page">
         <article className="group-page__card">
-          <span className="group-page__icon" aria-hidden="true">
-            WA
-          </span>
+          {group.image_url ? (
+            <img
+              src={group.image_url}
+              alt={`${group.name} WhatsApp group`}
+              className="group-page__image"
+              loading="eager"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <span className="group-page__icon" aria-hidden="true">
+              WA
+            </span>
+          )}
 
           <span className="group-page__category">
             {category}
