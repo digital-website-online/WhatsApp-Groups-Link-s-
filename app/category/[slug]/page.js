@@ -63,6 +63,7 @@ export default async function CategoryPage({ params }) {
       description,
       members,
       keywords,
+      image_url,
       categories(name),
       countries(name)
     `)
@@ -80,6 +81,7 @@ export default async function CategoryPage({ params }) {
     country: group.countries?.name || "",
     description: group.description || "",
     members: group.members || "",
+    image_url: group.image_url || null,
     href: `/group/${group.slug}`,
     keywords: group.keywords || "",
   }));
