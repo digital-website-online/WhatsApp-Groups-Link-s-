@@ -7,13 +7,24 @@ export default function GroupCard({
   description,
   members,
   href,
+  image_url,
 }) {
   return (
     <article className="group-card">
       <div className="group-card__top">
-        <div className="group-card__icon" aria-hidden="true">
-          WA
-        </div>
+        {image_url ? (
+          <img
+            src={image_url}
+            alt={`${name} WhatsApp group`}
+            className="group-card__image"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <div className="group-card__icon" aria-hidden="true">
+            WA
+          </div>
+        )}
 
         <div className="group-card__info">
           <span className="group-card__category">
