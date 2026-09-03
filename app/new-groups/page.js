@@ -1,27 +1,9 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import GroupCard from "../../components/GroupCard";
+import { supabase } from "../../lib/supabase";
 
-const newGroups = [
-  {
-    name: "Pakistan Community Hub",
-    category: "Community",
-    country: "Pakistan",
-    description:
-      "A new community for people looking to connect and share interests.",
-    members: "New",
-    href: "/group/pakistan-community-hub",
-  },
-  {
-    name: "Tech & AI Community",
-    category: "Technology",
-    country: "Global",
-    description:
-      "A new group for technology, AI and digital discussions.",
-    members: "New",
-    href: "/group/tech-ai-community",
-  },
-];
+export const revalidate = 60;
 
 export const metadata = {
   title: "New WhatsApp Groups",
@@ -32,7 +14,35 @@ export const metadata = {
   },
 };
 
-export default function NewGroupsPage() {
+export default async function NewGroupsPage() {
+  const { data: groupsData, error } = await supabase
+    .from("groups")
+    .select(`
+      name,
+      slug,
+      description,
+      members,
+      keywords,
+      categories(name),
+      countries(name)
+    `)
+    .eq("status", "approved")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Failed to load new groups:", error);
+  }
+
+  const newGroups = (groupsData || []).map((group) => ({
+    name: group.name,
+    category: group.categories?.name || "",
+    country: group.countries?.name || "",
+    description: group.description || "",
+    members: group.members || "",
+    href: `/group/${group.slug}`,
+    keywords: group.keywords || "",
+  }));
+
   return (
     <>
       <Header />
@@ -50,11 +60,19 @@ export default function NewGroupsPage() {
             </p>
           </div>
 
-          <div className="new-groups-page__grid">
-            {newGroups.map((group) => (
-              <GroupCard key={group.href} {...group} />
-            ))}
-          </div>
+          {newGroups.length > 0 ? (
+            <div className="new-groups-page__grid">
+              {newGroups.map((group) => (
+                <GroupCard key={group.href} {...group} />
+              ))}
+            </div>
+          ) : (
+            <div className="new-groups-page__empty">
+              <p>
+                New WhatsApp groups will appear here as they are added.
+              </p>
+            </div>
+          )}
         </section>
       </main>
 
