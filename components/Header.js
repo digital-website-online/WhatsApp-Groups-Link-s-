@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const navCards = [
@@ -64,7 +65,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <a
+        <Link
           href="/"
           className="site-header__logo"
           aria-label="WhatsApp Groups home"
@@ -78,7 +79,7 @@ export default function Header() {
           </span>
 
           <span>WhatsApp Groups</span>
-        </a>
+        </Link>
 
         <button
           type="button"
@@ -106,7 +107,7 @@ export default function Header() {
             aria-label="Main navigation"
           >
             {navCards.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className={`site-header__card ${
@@ -134,7 +135,7 @@ export default function Header() {
                 >
                   →
                 </span>
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
