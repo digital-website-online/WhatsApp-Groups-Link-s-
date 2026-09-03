@@ -71,11 +71,12 @@ export async function GET(request) {
       }
     );
 
-    const { data: adminData, error: adminError } = await adminClient
-      .from("admin_users")
-      .select("user_id")
-      .eq("user_id", user.id)
-      .maybeSingle();
+    const { data: adminData, error: adminError } =
+      await adminClient
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
 
     if (adminError || !adminData) {
       return NextResponse.json(
@@ -84,29 +85,25 @@ export async function GET(request) {
       );
     }
 
-    const { data: submissions, error: submissionsError } =
-      await adminClient
-        .from("group_submissions")
-        .select(`
-          id,
-          submitter_name,
-          group_name,
-          group_link,
-          category_id,
-          country_id,
-          members,
-          description,
-          status,
-          created_at,
-          categories:category_id (
-            name
-          ),
-          countries:country_id (
-            name
-          )
-        `)
-        .eq("status", "pending")
-        .order("created_at", { ascending: false });
+    const {
+      data: submissions,
+      error: submissionsError,
+    } = await adminClient
+      .from("group_submissions")
+      .select(`
+        id,
+        submitter_name,
+        group_name,
+        group_link,
+        category_id,
+        country_id,
+        members,
+        description,
+        status,
+        created_at
+      `)
+      .eq("status", "pending")
+      .order("created_at", { ascending: false });
 
     if (submissionsError) {
       console.error(
@@ -120,8 +117,97 @@ export async function GET(request) {
       );
     }
 
+    const categoryIds = [
+      ...new Set(
+        (submissions || [])
+          .map((submission) => submission.category_id)
+          .filter((id) => id !== null)
+      ),
+    ];
+
+    const countryIds = [
+      ...new Set(
+        (submissions || [])
+          .map((submission) => submission.country_id)
+          .filter((id) => id !== null)
+      ),
+    ];
+
+    let categories = [];
+    let countries = [];
+
+    if (categoryIds.length > 0) {
+      const { data, error } = await adminClient
+        .from("categories")
+        .select("id, name")
+        .in("id", categoryIds);
+
+      if (error) {
+        console.error(
+          "Admin categories error:",
+          error
+        );
+
+        return NextResponse.json(
+          { error: "Unable to load categories." },
+          { status: 500 }
+        );
+      }
+
+      categories = data || [];
+    }
+
+    if (countryIds.length > 0) {
+      const { data, error } = await adminClient
+        .from("countries")
+        .select("id, name")
+        .in("id", countryIds);
+
+      if (error) {
+        console.error(
+          "Admin countries error:",
+          error
+        );
+
+        return NextResponse.json(
+          { error: "Unable to load countries." },
+          { status: 500 }
+        );
+      }
+
+      countries = data || [];
+    }
+
+    const categoryMap = new Map(
+      categories.map((category) => [
+        category.id,
+        category.name,
+      ])
+    );
+
+    const countryMap = new Map(
+      countries.map((country) => [
+        country.id,
+        country.name,
+      ])
+    );
+
+    const formattedSubmissions = (submissions || []).map(
+      (submission) => ({
+        ...submission,
+        categories: {
+          name:
+            categoryMap.get(submission.category_id) || "—",
+        },
+        countries: {
+          name:
+            countryMap.get(submission.country_id) || "—",
+        },
+      })
+    );
+
     return NextResponse.json({
-      submissions: submissions || [],
+      submissions: formattedSubmissions,
     });
   } catch (error) {
     console.error("Admin API error:", error);
