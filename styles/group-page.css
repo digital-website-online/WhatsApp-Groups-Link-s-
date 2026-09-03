@@ -4,8 +4,9 @@
   margin: 0 auto;
   padding: 55px 20px 80px;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .group-page__card {
