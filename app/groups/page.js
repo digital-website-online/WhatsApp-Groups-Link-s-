@@ -43,6 +43,7 @@ export default async function GroupsPage({ searchParams }) {
       description,
       members,
       keywords,
+      image_url,
       categories(name),
       countries(name)
     `)
@@ -90,6 +91,7 @@ export default async function GroupsPage({ searchParams }) {
     country: group.countries?.name || "",
     description: group.description || "",
     members: group.members || "",
+    image_url: group.image_url || null,
     href: `/group/${group.slug}`,
     keywords: group.keywords || "",
   }));
@@ -121,7 +123,7 @@ export default async function GroupsPage({ searchParams }) {
 
             <h1>
               {query
-                ? `WhatsApp Groups for "${query}"`
+                ? `WhatsApp Groups for "${query"}"`
                 : "WhatsApp Groups"}
             </h1>
 
