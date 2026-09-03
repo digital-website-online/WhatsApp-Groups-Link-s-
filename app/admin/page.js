@@ -11,6 +11,8 @@ export default function AdminPage() {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [actionLoading, setActionLoading] = useState(null);
+  const [actionMessage, setActionMessage] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -76,6 +78,54 @@ export default function AdminPage() {
     router.replace("/admin/login");
   }
 
+  async function handleSubmissionAction(submissionId, action) {
+    if (!session || actionLoading) return;
+
+    const actionKey = `${action}-${submissionId}`;
+
+    setActionLoading(actionKey);
+    setActionMessage("");
+    setError("");
+
+    try {
+      const response = await fetch(
+        `/api/admin/submissions/${submissionId}/${action}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.error || `Unable to ${action} this submission.`
+        );
+      }
+
+      setSubmissions((current) =>
+        current.filter((submission) => submission.id !== submissionId)
+      );
+
+      setActionMessage(
+        action === "approve"
+          ? "Group approved successfully."
+          : "Submission rejected successfully."
+      );
+    } catch (actionError) {
+      console.error(`${action} submission error:`, actionError);
+      setError(
+        actionError.message ||
+          `Unable to ${action} this submission.`
+      );
+    } finally {
+      setActionLoading(null);
+    }
+  }
+
   return (
     <main className="admin-page">
       <div className="admin-shell">
@@ -134,6 +184,12 @@ export default function AdminPage() {
           {!loading && error && (
             <div className="admin-state admin-state--error">
               {error}
+            </div>
+          )}
+
+          {!loading && !error && actionMessage && (
+            <div className="admin-action-message">
+              {actionMessage}
             </div>
           )}
 
@@ -208,6 +264,42 @@ export default function AdminPage() {
                     {new Date(
                       submission.created_at
                     ).toLocaleString()}
+                  </div>
+
+                  <div className="admin-actions">
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-action-btn--approve"
+                      onClick={() =>
+                        handleSubmissionAction(
+                          submission.id,
+                          "approve"
+                        )
+                      }
+                      disabled={actionLoading !== null}
+                    >
+                      {actionLoading ===
+                      `approve-${submission.id}`
+                        ? "Approving..."
+                        : "✓ Approve"}
+                    </button>
+
+                    <button
+                      type="button"
+                      className="admin-action-btn admin-action-btn--reject"
+                      onClick={() =>
+                        handleSubmissionAction(
+                          submission.id,
+                          "reject"
+                        )
+                      }
+                      disabled={actionLoading !== null}
+                    >
+                      {actionLoading ===
+                      `reject-${submission.id}`
+                        ? "Rejecting..."
+                        : "✕ Reject"}
+                    </button>
                   </div>
                 </article>
               ))}
@@ -349,6 +441,17 @@ export default function AdminPage() {
           color: #b42318;
         }
 
+        .admin-action-message {
+          margin: 16px 16px 0;
+          padding: 12px 14px;
+          border: 1px solid #d7eee7;
+          border-radius: 11px;
+          background: #f1faf7;
+          color: #176b5b;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
         .admin-spinner {
           width: 16px;
           height: 16px;
@@ -449,6 +552,41 @@ export default function AdminPage() {
           font-size: 10px;
         }
 
+        .admin-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          margin-top: 17px;
+          padding-top: 15px;
+          border-top: 1px solid #e8eeee;
+        }
+
+        .admin-action-btn {
+          min-height: 42px;
+          border: 0;
+          border-radius: 11px;
+          font-size: 13px;
+          font-weight: 800;
+          cursor: pointer;
+          transition: opacity 0.15s ease;
+        }
+
+        .admin-action-btn--approve {
+          background: #176b5b;
+          color: #fff;
+        }
+
+        .admin-action-btn--reject {
+          background: #fff1f1;
+          color: #b42318;
+          border: 1px solid #f0caca;
+        }
+
+        .admin-action-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
         @keyframes admin-spin {
           to {
             transform: rotate(360deg);
@@ -483,6 +621,10 @@ export default function AdminPage() {
           }
 
           .admin-details {
+            grid-template-columns: 1fr;
+          }
+
+          .admin-actions {
             grid-template-columns: 1fr;
           }
 
