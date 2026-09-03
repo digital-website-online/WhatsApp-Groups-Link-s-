@@ -1,85 +1,30 @@
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import GroupCard from "../../../components/GroupCard";
+import { supabase } from "../../../lib/supabase";
 
-const categories = {
-  education: {
-    name: "Education",
-    description:
-      "Discover WhatsApp groups for students, learning, study resources and educational communities.",
-  },
-  technology: {
-    name: "Technology",
-    description:
-      "Explore WhatsApp groups about technology, programming, AI and digital innovation.",
-  },
-  gaming: {
-    name: "Gaming",
-    description:
-      "Find gaming communities, players and WhatsApp groups for gaming discussions.",
-  },
-  sports: {
-    name: "Sports",
-    description:
-      "Discover WhatsApp groups for sports fans, teams, matches and sports discussions.",
-  },
-  business: {
-    name: "Business",
-    description:
-      "Explore business, entrepreneurship and professional WhatsApp communities.",
-  },
-  entertainment: {
-    name: "Entertainment",
-    description:
-      "Find WhatsApp groups for movies, shows, music and entertainment communities.",
-  },
-  community: {
-    name: "Community",
-    description:
-      "Discover general WhatsApp communities and social groups.",
-  },
-  jobs: {
-    name: "Jobs",
-    description:
-      "Find WhatsApp groups for jobs, careers, employment and professional opportunities.",
-  },
-};
-
-const groups = [
-  {
-    name: "Technology & Programming",
-    category: "Technology",
-    country: "Global",
-    description:
-      "Discuss programming, technology and the latest digital trends.",
-    members: "2.4K",
-    href: "/group/technology-programming",
-  },
-  {
-    name: "Study & Education Hub",
-    category: "Education",
-    country: "Pakistan",
-    description:
-      "Share knowledge, resources and study discussions.",
-    members: "1.5K",
-    href: "/group/study-education-hub",
-  },
-];
+export const revalidate = 60;
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const category = categories[slug];
+
+  const { data: category } = await supabase
+    .from("categories")
+    .select("name, description")
+    .eq("slug", slug)
+    .single();
 
   if (!category) {
     return {
       title: "Category Not Found",
-      description: "The requested WhatsApp group category could not be found.",
+      description:
+        "The requested WhatsApp group category could not be found.",
     };
   }
 
   return {
     title: `WhatsApp Groups for ${category.name}`,
-    description: category.description,
+    description: category.description || "",
     alternates: {
       canonical: `/category/${slug}`,
     },
@@ -88,9 +33,14 @@ export async function generateMetadata({ params }) {
 
 export default async function CategoryPage({ params }) {
   const { slug } = await params;
-  const category = categories[slug];
 
-  if (!category) {
+  const { data: category, error: categoryError } = await supabase
+    .from("categories")
+    .select("id, name, description")
+    .eq("slug", slug)
+    .single();
+
+  if (categoryError || !category) {
     return (
       <>
         <Header />
@@ -105,9 +55,34 @@ export default async function CategoryPage({ params }) {
     );
   }
 
-  const categoryGroups = groups.filter(
-    (group) => group.category.toLowerCase() === category.name.toLowerCase()
-  );
+  const { data: groupsData, error: groupsError } = await supabase
+    .from("groups")
+    .select(`
+      name,
+      slug,
+      description,
+      members,
+      keywords,
+      categories(name),
+      countries(name)
+    `)
+    .eq("category_id", category.id)
+    .eq("status", "approved")
+    .order("created_at", { ascending: false });
+
+  if (groupsError) {
+    console.error("Failed to load category groups:", groupsError);
+  }
+
+  const categoryGroups = (groupsData || []).map((group) => ({
+    name: group.name,
+    category: group.categories?.name || category.name,
+    country: group.countries?.name || "",
+    description: group.description || "",
+    members: group.members || "",
+    href: `/group/${group.slug}`,
+    keywords: group.keywords || "",
+  }));
 
   return (
     <>
