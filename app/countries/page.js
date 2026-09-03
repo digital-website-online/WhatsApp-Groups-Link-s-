@@ -1,14 +1,8 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { supabase } from "../../lib/supabase";
 
-const countries = [
-  { name: "Pakistan", slug: "pakistan", flag: "🇵🇰" },
-  { name: "India", slug: "india", flag: "🇮🇳" },
-  { name: "Bangladesh", slug: "bangladesh", flag: "🇧🇩" },
-  { name: "United States", slug: "united-states", flag: "🇺🇸" },
-  { name: "United Kingdom", slug: "united-kingdom", flag: "🇬🇧" },
-  { name: "Canada", slug: "canada", flag: "🇨🇦" },
-];
+export const revalidate = 60;
 
 export const metadata = {
   title: "WhatsApp Groups by Country",
@@ -19,7 +13,16 @@ export const metadata = {
   },
 };
 
-export default function CountriesPage() {
+export default async function CountriesPage() {
+  const { data: countries, error } = await supabase
+    .from("countries")
+    .select("name, slug, flag")
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Failed to load countries:", error);
+  }
+
   return (
     <>
       <Header />
@@ -38,7 +41,7 @@ export default function CountriesPage() {
           </div>
 
           <div className="countries-page__grid">
-            {countries.map((country) => (
+            {(countries || []).map((country) => (
               <a
                 href={`/country/${country.slug}`}
                 className="country-page-card"
@@ -65,6 +68,12 @@ export default function CountriesPage() {
               </a>
             ))}
           </div>
+
+          {(!countries || countries.length === 0) && (
+            <div className="countries-page__empty">
+              <p>Countries will appear here as they are added.</p>
+            </div>
+          )}
         </section>
       </main>
 
