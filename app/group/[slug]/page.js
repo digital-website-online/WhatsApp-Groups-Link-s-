@@ -67,6 +67,26 @@ export default async function GroupPage({ params }) {
   const country = group.countries?.name || "";
   const joinUrl = group.join_url;
 
+  const { data: navigationGroups } = await supabase
+    .from("groups")
+    .select("name, slug")
+    .eq("status", "approved")
+    .order("created_at", { ascending: false });
+
+  const currentIndex = (navigationGroups || []).findIndex(
+    (item) => item.slug === group.slug
+  );
+
+  const previousGroup =
+    currentIndex >= 0
+      ? navigationGroups[currentIndex + 1] || null
+      : null;
+
+  const nextGroup =
+    currentIndex > 0
+      ? navigationGroups[currentIndex - 1] || null
+      : null;
+
   return (
     <>
       <Header />
@@ -108,6 +128,55 @@ export default async function GroupPage({ params }) {
               Join WhatsApp Group
               <span aria-hidden="true">→</span>
             </span>
+          )}
+
+          {(previousGroup || nextGroup) && (
+            <nav
+              className="group-page__navigation"
+              aria-label="Group navigation"
+            >
+              {previousGroup ? (
+                <a
+                  href={`/group/${previousGroup.slug}`}
+                  className="group-page__nav group-page__nav--previous"
+                >
+                  <span
+                    className="group-page__nav-arrow"
+                    aria-hidden="true"
+                  >
+                    ←
+                  </span>
+
+                  <span className="group-page__nav-content">
+                    <small>Previous Group</small>
+                    <strong>{previousGroup.name}</strong>
+                  </span>
+                </a>
+              ) : (
+                <span className="group-page__nav-placeholder" />
+              )}
+
+              {nextGroup ? (
+                <a
+                  href={`/group/${nextGroup.slug}`}
+                  className="group-page__nav group-page__nav--next"
+                >
+                  <span className="group-page__nav-content">
+                    <small>Next Group</small>
+                    <strong>{nextGroup.name}</strong>
+                  </span>
+
+                  <span
+                    className="group-page__nav-arrow"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </a>
+              ) : (
+                <span className="group-page__nav-placeholder" />
+              )}
+            </nav>
           )}
         </article>
       </main>
