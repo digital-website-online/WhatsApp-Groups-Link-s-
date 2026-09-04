@@ -1,7 +1,8 @@
 import { BASE_URL } from "../lib/site";
 import topicLandingData from "../data/topicLandingData";
+import { supabase } from "../lib/supabase";
 
-export default function sitemap() {
+export default async function sitemap() {
   const lastModified = new Date();
 
   const landingPages = Object.values(topicLandingData).map(
@@ -12,6 +13,46 @@ export default function sitemap() {
       priority: 0.7,
     })
   );
+
+  const [
+    { data: groups },
+    { data: categories },
+    { data: countries },
+  ] = await Promise.all([
+    supabase
+      .from("groups")
+      .select("slug")
+      .eq("status", "approved"),
+
+    supabase
+      .from("categories")
+      .select("slug"),
+
+    supabase
+      .from("countries")
+      .select("slug"),
+  ]);
+
+  const groupPages = (groups || []).map((group) => ({
+    url: `${BASE_URL}/group/${group.slug}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  const categoryPages = (categories || []).map((category) => ({
+    url: `${BASE_URL}/category/${category.slug}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  const countryPages = (countries || []).map((country) => ({
+    url: `${BASE_URL}/country/${country.slug}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
 
   return [
     {
@@ -43,5 +84,8 @@ export default function sitemap() {
     },
 
     ...landingPages,
+    ...groupPages,
+    ...categoryPages,
+    ...countryPages,
   ];
 }
