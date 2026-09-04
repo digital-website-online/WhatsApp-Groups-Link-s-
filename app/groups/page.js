@@ -123,7 +123,7 @@ export default async function GroupsPage({ searchParams }) {
 
             <h1>
               {query
-                ? `WhatsApp Groups for "${query"}"`
+                ? `WhatsApp Groups for "${query}"`
                 : "WhatsApp Groups"}
             </h1>
 
