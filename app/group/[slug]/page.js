@@ -77,6 +77,7 @@ export default async function GroupPage({ params }) {
       slug,
       description,
       members,
+      image_url,
       categories(name),
       countries(name)
     `)
